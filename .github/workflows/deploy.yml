@@ -1,0 +1,87 @@
+name: Deploy Laravel Backend to Fastadeliveries
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH and Deploy Laravel
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            # 1. Navigate to your specific subdomain/addon domain folder
+            cd /home/petrosup/fastadeliveries.co.ke
+
+            # 2. Set writable temporary directory using your user path
+            export TMPDIR=/home/petrosup/tmp
+            mkdir -p /home/petrosup/tmp
+            chmod -R 777 /home/petrosup/tmp
+
+            # 3. Pull latest main code from your private repository using GITHUB_TOKEN
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/etyanglinus/fastadeliveries_backend.git
+            git fetch origin main
+            git reset --hard origin/main
+
+            # 4. Explicitly set cPanel PHP 8.3 binary path
+            PHP_BIN="/opt/cpanel/ea-php83/root/usr/bin/php"
+
+            # 5. Put application into maintenance mode
+            $PHP_BIN artisan down || true
+
+            # 6. Recreate missing 6amMart storage upload subdirectories
+            mkdir -p storage/app/public/business \
+                     storage/app/public/admin \
+                     storage/app/public/banner \
+                     storage/app/public/profile \
+                     storage/app/public/vendor \
+                     storage/app/public/reviewer \
+                     storage/app/public/parcel \
+                     storage/framework/cache/data \
+                     storage/framework/sessions \
+                     storage/framework/views \
+                     storage/logs
+
+            # 7. Apply cPanel standard write permissions
+            chmod -R 775 storage bootstrap/cache /home/petrosup/tmp
+
+            # 8. Re-establish storage symlink cleanly
+            rm -rf public/storage
+            $PHP_BIN artisan storage:link
+
+            # 9. Force web server upload limits and temporary directory in .user.ini
+            cat << 'EOF' > .user.ini
+            upload_max_filesize = 120M
+            post_max_size = 120M
+            memory_limit = 256M
+            max_execution_time = 300
+            file_uploads = On
+            upload_tmp_dir = /home/petrosup/tmp
+            EOF
+            cp .user.ini public/.user.ini
+
+            # 10. Install production dependencies
+            COMPOSER_MEMORY_LIMIT=-1 TMPDIR=/home/petrosup/tmp $PHP_BIN -d memory_limit=1024M composer.phar install --no-dev --optimize-autoloader --prefer-dist --no-progress
+
+            # 11. Run database migrations safely
+            $PHP_BIN artisan migrate --force
+
+            # 12. Clear old cached configs
+            $PHP_BIN artisan config:clear
+            $PHP_BIN artisan route:clear
+            $PHP_BIN artisan view:clear
+            $PHP_BIN artisan cache:clear
+
+            # Reload queue workers
+            $PHP_BIN artisan queue:restart
+
+            # 13. Bring application back online
+            $PHP_BIN artisan up
