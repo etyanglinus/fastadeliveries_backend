@@ -18,7 +18,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            # 1. Navigate to your specific subdomain/addon domain folder
+            # 1. Navigate to your specific addon domain folder
             cd /home/petrosup/fastadeliveries.co.ke
 
             # 2. Set writable temporary directory using your user path
@@ -82,8 +82,6 @@ jobs:
 
             # Reload queue workers
             $PHP_BIN artisan queue:restart
-
-            
 
             # 13. Bring application back online
             $PHP_BIN artisan up
