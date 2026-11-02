@@ -83,5 +83,7 @@ jobs:
             # Reload queue workers
             $PHP_BIN artisan queue:restart
 
+            
+
             # 13. Bring application back online
             $PHP_BIN artisan up
