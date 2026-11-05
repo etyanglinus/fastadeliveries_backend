@@ -691,6 +691,12 @@ Route::name('admin.')->controller(ZoneController::class)->group(function () {
                 Route::post('page-meta-data-update', 'pageMetaDataUpdate')->name('pageMetaDataUpdate');
             });
 
+            Route::middleware(['module:business_pages'])->prefix('pages/company')->name('company-pages.')
+                ->controller(\App\Http\Controllers\Admin\FastaCompanyPageController::class)->group(function () {
+                    Route::get('{page?}', 'edit')->name('edit');
+                    Route::post('{page}', 'update')->name('update');
+                });
+
             Route::middleware(['module:business_pages'])->controller(BusinessSettingsController::class)->group(function () {
                 Route::get('pages/business-page/terms-and-conditions', 'terms_and_conditions')->name('terms-and-conditions');
                 Route::post('pages/business-page/terms-and-conditions', 'terms_and_conditions_update');

@@ -36,20 +36,23 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function portal()
+    public function careers()
     {
-        $logins = DataSetting::whereIn('key', ['admin_login_url', 'store_login_url'])->pluck('value', 'key');
-        $storefrontUrl = config('app.storefront_url');
-        if (! is_string($storefrontUrl) || ! filter_var($storefrontUrl, FILTER_VALIDATE_URL)
-            || ! in_array(parse_url($storefrontUrl, PHP_URL_SCHEME), ['http', 'https'], true)) {
-            $storefrontUrl = null;
-        }
+        return $this->companyPage('careers');
+    }
 
-        return view('fasta-portal', [
-            'storefrontUrl' => $storefrontUrl,
-            'adminLogin' => empty($logins['admin_login_url']) ? null : route('login', $logins['admin_login_url']),
-            'vendorLogin' => empty($logins['store_login_url']) ? null : route('login', $logins['store_login_url']),
-        ]);
+    public function campus()
+    {
+        return $this->companyPage('campus');
+    }
+
+    public function companyPage(string $page)
+    {
+        $pageService = app(\App\Services\FastaCompanyPages::class);
+        $companyPage = $pageService->all()[$page] ?? null;
+        abort_unless($companyPage && $companyPage['published'] && !in_array($page, ['home', 'about'], true), 404);
+
+        return view('company.page', compact('companyPage', 'pageService'));
     }
 
     public function index()
@@ -195,7 +198,7 @@ class HomeController extends Controller
 
         if (isset($config) && $config) {
 
-            return view('home', compact('landing_data', 'new_user'));
+            return view('home', compact('landing_data', 'new_user') + ['storefrontUrl' => config('app.storefront_url')]);
         } elseif ($landing_integration_type == 'file_upload' && File::exists('resources/views/layouts/landing/custom/index.blade.php')) {
             return view('layouts.landing.custom.index');
         } elseif ($landing_integration_type == 'url') {
@@ -241,22 +244,10 @@ class HomeController extends Controller
 
     public function about_us(Request $request)
     {
-        $data = self::get_settings('about_us');
-        $data_title = self::get_settings('about_title');
-
-        $config = Helpers::get_business_settings('landing_page');
-        $landing_integration_type = Helpers::get_business_data('landing_integration_type');
-        $redirect_url = Helpers::get_business_data('landing_page_custom_url');
-
-        if (isset($config) && $config) {
-            return view('about-us', compact('data', 'data_title'));
-        } elseif ($landing_integration_type == 'file_upload' && File::exists('resources/views/layouts/landing/custom/index.blade.php')) {
-            return view('layouts.landing.custom.index');
-        } elseif ($landing_integration_type == 'url') {
-            return redirect($redirect_url);
-        } else {
-            abort(404);
-        }
+        return view('about-us', [
+            'data' => self::get_settings('about_us'),
+            'data_title' => self::get_settings('about_title'),
+        ]);
     }
 
     public function contact_us()
