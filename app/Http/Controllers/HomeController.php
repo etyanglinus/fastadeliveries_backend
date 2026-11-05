@@ -36,6 +36,22 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+    public function portal()
+    {
+        $logins = DataSetting::whereIn('key', ['admin_login_url', 'store_login_url'])->pluck('value', 'key');
+        $storefrontUrl = config('app.storefront_url');
+        if (! is_string($storefrontUrl) || ! filter_var($storefrontUrl, FILTER_VALIDATE_URL)
+            || ! in_array(parse_url($storefrontUrl, PHP_URL_SCHEME), ['http', 'https'], true)) {
+            $storefrontUrl = null;
+        }
+
+        return view('fasta-portal', [
+            'storefrontUrl' => $storefrontUrl,
+            'adminLogin' => empty($logins['admin_login_url']) ? null : route('login', $logins['admin_login_url']),
+            'vendorLogin' => empty($logins['store_login_url']) ? null : route('login', $logins['store_login_url']),
+        ]);
+    }
+
     public function index()
     {
         $datas =  DataSetting::with('translations', 'storage')->where('type', 'admin_landing_page')->get();

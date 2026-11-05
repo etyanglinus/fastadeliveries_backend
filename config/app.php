@@ -3,6 +3,7 @@
 use App\Providers\InterfaceServiceProvider;
 
 return [
+    'storefront_url' => env('FASTA_STOREFRONT_URL', env('APP_ENV') === 'local' ? 'http://localhost:3017/' : null),
 
     /*
     |--------------------------------------------------------------------------

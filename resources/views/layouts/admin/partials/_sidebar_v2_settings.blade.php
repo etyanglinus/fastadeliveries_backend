@@ -397,12 +397,8 @@
                 <div class="v2-group">
                     <button type="button" class="v2-group-header" data-group-toggle="pg-land"><span>{{ translate('Landing pages') }}</span><i data-lucide="chevron-down" class="v2-chev"></i></button>
                     <div class="v2-group-items">
-                        <a class="v2-nav-item {{ $is('admin/business-settings/pages/admin-landing-page-settings*') ? 'is-active' : '' }}" href="{{ route('admin.business-settings.admin-landing-page-settings', 'setup') }}" data-id="pg-adm">
-                            <span class="v2-dot v2-dot--blue"></span><span class="v2-label">{{ translate('Admin landing page') }}</span>
-                            <button type="button" class="v2-pin" data-pin="pg-adm" title="{{ translate('Pin') }}">@include('layouts.admin.partials._v2_pin_icon')</button>
-                        </a>
                         <a class="v2-nav-item {{ $is('admin/business-settings/pages/react-landing-page-settings*') ? 'is-active' : '' }}" href="{{ route('admin.business-settings.react-landing-page-settings', 'header') }}" data-id="pg-rea">
-                            <span class="v2-dot v2-dot--blue"></span><span class="v2-label">{{ translate('React landing page') }}</span>
+                            <span class="v2-dot v2-dot--blue"></span><span class="v2-label">{{ translate('Storefront landing page') }}</span>
                             <button type="button" class="v2-pin" data-pin="pg-rea" title="{{ translate('Pin') }}">@include('layouts.admin.partials._v2_pin_icon')</button>
                         </a>
                         @if (addon_published_status('RideShare') == 1)

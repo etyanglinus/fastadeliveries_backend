@@ -255,6 +255,10 @@ class CategoryService extends BaseService
             }
         }
 
+        $namedImport = $toAdd && $firstRow !== null && array_key_exists('ParentName', (array) $firstRow);
+        $newParentNames = $namedImport ? $collections->filter(
+            fn ($row) => is_numeric($row['Position']) && (int) $row['Position'] === 0
+        )->pluck('Name')->map(fn ($name) => trim((string) $name))->all() : [];
         $data = [];
         $seenNames = [];
         foreach ($collections as $collection) {
@@ -268,7 +272,12 @@ class CategoryService extends BaseService
             }
 
             $parentId = is_numeric($collection['ParentId']) ? (int) $collection['ParentId'] : 0;
-            if ($position === 1) {
+            $parentName = $toAdd && $position === 1 ? trim((string) ($collection['ParentName'] ?? '')) : '';
+            if ($parentName !== '') {
+                if ($parentId !== 0) return ['flag' => 'invalid_parent'];
+                $parentId = (int) Category::withoutGlobalScopes()->where(['position' => 0, 'module_id' => $moduleId, 'name' => $parentName])->value('id');
+                if ($parentId === 0 && ! in_array($parentName, $newParentNames, true)) return ['flag' => 'invalid_parent'];
+            } elseif ($position === 1) {
                 $parentExists = $parentId > 0 && Category::where(['id' => $parentId, 'position' => 0, 'module_id' => $moduleId])->exists();
                 if (! $parentExists) {
                     return ['flag' => 'invalid_parent'];
@@ -278,11 +287,17 @@ class CategoryService extends BaseService
             }
 
             $ignoreId = (! $toAdd && is_numeric($collection['Id'])) ? (int) $collection['Id'] : null;
-            $nameKey = $parentId.'|'.mb_strtolower(trim($collection['Name']));
-            if (in_array($nameKey, $seenNames, true) || Category::isDuplicateName($collection['Name'], $moduleId, $parentId, $ignoreId)) {
+            $newParent = $parentName !== '' && $parentId === 0;
+            $parentKey = $newParent ? 'new:'.$parentName : (string) $parentId;
+            $nameKey = $parentKey.'|'.mb_strtolower(trim($collection['Name']));
+            if (in_array($nameKey, $seenNames, true)) {
                 return ['flag' => 'duplicate_name'];
             }
             $seenNames[] = $nameKey;
+            if (! $newParent && Category::isDuplicateName($collection['Name'], $moduleId, $parentId, $ignoreId)) {
+                if ($namedImport) continue;
+                return ['flag' => 'duplicate_name'];
+            }
 
             $array = [
                 'name' => $collection['Name'],
@@ -295,6 +310,10 @@ class CategoryService extends BaseService
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
+
+            if ($namedImport) {
+                $array['import_parent_name'] = $newParent ? $parentName : '';
+            }
 
             if (! $toAdd) {
                 $array['id'] = $collection['Id'];

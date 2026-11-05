@@ -39,6 +39,17 @@ class UpdatablePackage extends Command
      */
     public function handle()
     {
+        // Packaging mutates the route provider. Only build from a clean staging copy.
+        $environment = base_path('.env');
+        $template = base_path('.env.example');
+        if (file_exists($environment)
+            && (! is_readable($environment) || ! is_readable($template)
+                || file_get_contents($environment) !== file_get_contents($template))) {
+            $this->error('Package preparation requires a clean checkout with no .env or an untouched .env.example copy.');
+
+            return self::FAILURE;
+        }
+
         Artisan::call('debugbar:clear');
 
         // bootstrap/cache/ is git-ignored but a release zip is built from the working tree, so

@@ -41,7 +41,7 @@ Route::controller(FirebaseController::class)->group(function () {
     Route::post('/subscribeToTopic', 'subscribeToTopic')->middleware(['auth:admin,vendor,vendor_employee', 'throttle:10,1']);
 });
 Route::controller(HomeController::class)->group(function () {
-    Route::get('/', 'index')->name('home');
+    Route::get('/', 'portal')->name('home');
     Route::get('maintenance-mode', 'maintenanceMode')->name('maintenance_mode');
     Route::get('lang/{locale}', [HomeController::class, 'lang'])->name('lang');
     Route::get('terms-and-conditions', 'terms_and_conditions')->name('terms-and-conditions');

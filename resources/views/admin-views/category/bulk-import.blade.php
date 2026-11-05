@@ -34,7 +34,7 @@
         'columns' => ['Name', 'Image', 'ParentId', 'Position', 'Priority', 'Status', translate('Id (update only)')],
         'tips' => [
             translate('Position tells a main category from a subcategory.') . ' ' . translate('Main category') . ': 0, ' . translate('Subcategory') . ': 1',
-            translate('A subcategory needs a parentid belonging to a main category in this module.'),
+            translate('For a new import, use ParentName to link to a main category in the file or in this module. Set ParentId to 0 when using ParentName. You can also use an existing ParentId.'),
             translate('Status is either active or inactive, and priority is a number.'),
             translate('Two categories under the same parent cannot share a name.'),
             translate('Image takes a file path from the category folder of the gallery, such as') . ' <code>2021-08-20-611fbe0e334c5.png</code>',

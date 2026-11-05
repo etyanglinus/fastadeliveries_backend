@@ -34,11 +34,28 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function addByChunk(array $data): void
     {
+        $namedImport = isset($data[0]['import_parent_name']);
+        if ($namedImport) {
+            usort($data, fn ($left, $right) => $left['position'] <=> $right['position']);
+        }
+        $parentIds = [];
         $chunkSize = 100;
         $chunkCategories = array_chunk($data, $chunkSize);
 
         foreach ($chunkCategories as $key => $chunkCategory) {
             foreach ($chunkCategory as $category) {
+                if ($namedImport) {
+                    $parentName = $category['import_parent_name'];
+                    unset($category['import_parent_name']);
+                    if ($parentName !== '') {
+                        $category['parent_id'] = $parentIds[$parentName];
+                    }
+                    $model = $this->add($category);
+                    if ($category['position'] === 0) {
+                        $parentIds[trim($category['name'])] = $model->id;
+                    }
+                    continue;
+                }
                 $insertedId = DB::table('categories')->insertGetId($category);
                 Helpers::updateStorageTable(get_class(new Category), $insertedId, $category['image']);
             }
