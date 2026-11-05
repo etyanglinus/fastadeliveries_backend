@@ -35,6 +35,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('vendor.')->group(function () {
     Route::middleware(['vendor', 'maintenance'])->group(function () {
+        Route::get('brandsite', [\App\Http\Controllers\Vendor\BrandSiteController::class, 'show'])
+            ->name('brandsite.show');
+        Route::post('brandsite', [\App\Http\Controllers\Vendor\BrandSiteController::class, 'save'])
+            ->middleware('throttle:30,1')->name('brandsite.save');
+        Route::post('brandsite/editor', [\App\Http\Controllers\Vendor\BrandSiteController::class, 'launch'])
+            ->middleware('throttle:10,1')->name('brandsite.launch');
+        Route::get('brandsite/domains', [\App\Http\Controllers\Vendor\BrandSiteController::class, 'domains'])
+            ->name('brandsite.domains');
+        Route::post('brandsite/domains', [\App\Http\Controllers\Vendor\BrandSiteController::class, 'registerDomain'])
+            ->middleware('throttle:10,1')->name('brandsite.domain.register');
+        Route::post('brandsite/domains/{id}/verify', [\App\Http\Controllers\Vendor\BrandSiteController::class, 'verifyDomain'])
+            ->whereNumber('id')->middleware('throttle:5,1')->name('brandsite.domain.verify');
+        Route::delete('brandsite/domains/{id}', [\App\Http\Controllers\Vendor\BrandSiteController::class, 'removeDomain'])
+            ->whereNumber('id')->middleware('throttle:10,1')->name('brandsite.domain.remove');
         Route::controller(SearchRoutingController::class)->group(function () {
             Route::post('search-routing', 'index')->name('search.routing');
             Route::get('recent-search', 'recentSearch')->name('recent.search');

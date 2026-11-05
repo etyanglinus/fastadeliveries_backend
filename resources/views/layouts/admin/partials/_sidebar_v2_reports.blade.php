@@ -86,12 +86,17 @@
             if ($sec_on) { $active_section = $sec_key; break; }
         }
     }
+    if (request()->is('admin/brandsite*')) $active_section = 'brandsite';
 @endphp
 
 <aside id="v2-shell" class="v2-shell" data-workspace="reports" data-active-section="{{ $active_section }}">
     <div id="v2-rail" class="v2-rail" role="navigation" aria-label="Sections">
         <div class="v2-rail-scope d-none">REPORTS</div>
         <div class="v2-rail-btns">
+            @if((int) auth('admin')->user()?->role_id === 1)
+            <a href="{{ route('admin.brandsite.index') }}" class="v2-rail-btn {{ $active_section==='brandsite' ? 'is-active' : '' }}" data-section="brandsite" data-label="BrandSite" aria-label="BrandSite"><i data-lucide="panels-top-left"></i><span class="v2-pin-dot"></span></a>
+            @endif
+
             @if($sec_visible['transaction'])
             <button class="v2-rail-btn {{ $active_section==='transaction' ? 'is-active' : '' }}" data-section="transaction" data-label="{{ translate('Transaction report') }}" aria-label="{{ translate('Transaction report') }}">
                 <i data-lucide="arrow-left-right"></i><span class="v2-pin-dot"></span>
@@ -126,6 +131,16 @@
     </div>
 
     <aside id="v2-panel" class="v2-panel" aria-label="{{ translate('Section navigation') }}">
+        @if((int) auth('admin')->user()?->role_id === 1)
+        <div class="v2-panel-content" data-panel="brandsite" @if($active_section !== 'brandsite') hidden @endif>
+            <div class="v2-panel-header"><div class="v2-panel-title"><span class="name">BrandSite</span></div><div class="v2-panel-subtitle">Storefronts and seller support</div></div>
+            <div class="v2-panel-body"><div class="v2-group-items">
+                <a class="v2-nav-item {{ request()->is('admin/brandsite*') ? 'is-active' : '' }}" href="{{ route('admin.brandsite.index') }}"><span class="v2-dot v2-dot--blue"></span><span class="v2-label">All storefronts</span></a>
+                <a class="v2-nav-item" href="{{ route('admin.business-settings.subscriptionackage.index', ['module' => 'all']) }}"><span class="v2-dot v2-dot--violet"></span><span class="v2-label">Subscription packages</span></a>
+            </div></div>
+        </div>
+        @endif
+
         @if($sec_visible['transaction'])
         <div class="v2-panel-content" data-panel="transaction" @if($active_section!=='transaction') hidden @endif>
             <div class="v2-panel-header">

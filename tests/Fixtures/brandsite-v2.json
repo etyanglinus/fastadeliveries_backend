@@ -1,0 +1,310 @@
+{
+  "version": 2,
+  "title": "Fasta studio",
+  "description": "A detailed test storefront.",
+  "accent": "#039D55",
+  "motion": "rise",
+  "settings": {
+    "font": "system",
+    "width": "wide",
+    "radius": "soft",
+    "background": "#ffffff",
+    "navigation": true,
+    "footer": "Carefully chosen, locally delivered."
+  },
+  "seo": {
+    "title": "Fasta studio",
+    "description": "Our collection",
+    "indexable": false
+  },
+  "sections": [
+    {
+      "id": "b-1a56a823-58fe-4505-9f2d-3c9b9e7435c7",
+      "type": "hero",
+      "name": "Hero",
+      "props": {
+        "align": "left",
+        "spacing": "normal",
+        "columns": 3,
+        "eyebrow": "WELCOME TO OUR STORE",
+        "heading": "Fasta studio",
+        "text": "Discover your new favourites. Carefully selected, ready when you are.",
+        "image": "",
+        "alt": "",
+        "button": "Explore the collection",
+        "href": "",
+        "layout": "split"
+      }
+    },
+    {
+      "id": "b-2feb2924-fa58-4705-9309-5e17c2dcf963",
+      "type": "catalog",
+      "name": "Product catalog",
+      "props": {
+        "align": "left",
+        "spacing": "normal",
+        "columns": 3,
+        "eyebrow": "CURATED FOR YOU",
+        "heading": "Shop our favourites",
+        "text": "Explore what is available from our store."
+      }
+    },
+    {
+      "id": "b-1107c28e-31a8-47be-8a1f-90407b1a02dd",
+      "type": "banner",
+      "name": "Promotion banner",
+      "props": {
+        "align": "left",
+        "spacing": "normal",
+        "columns": 3,
+        "eyebrow": "SOMETHING SPECIAL",
+        "heading": "Meet your next favourite.",
+        "text": "A collection worth making room for.",
+        "button": "Shop now",
+        "href": "",
+        "background": "#e7f4eb",
+        "layout": "cover"
+      }
+    },
+    {
+      "id": "b-d342a25f-62d3-4e7d-89f1-13d184263ef1",
+      "type": "heading",
+      "name": "Heading",
+      "props": {
+        "align": "left",
+        "spacing": "normal",
+        "columns": 3,
+        "eyebrow": "OUR COLLECTION",
+        "heading": "A little inspiration.",
+        "text": "Discover something that feels like you."
+      }
+    },
+    {
+      "id": "b-404581a8-d776-4543-98a1-da1cc6bb582d",
+      "type": "text",
+      "name": "Text",
+      "props": {
+        "align": "left",
+        "spacing": "normal",
+        "columns": 3,
+        "heading": "Our story",
+        "text": "Every great store starts with a simple idea. Share yours here."
+      }
+    },
+    {
+      "id": "b-ce5e53de-3ce1-4f7c-94ac-c35ba02c8e18",
+      "type": "image",
+      "name": "Image",
+      "props": {
+        "align": "left",
+        "spacing": "normal",
+        "columns": 3,
+        "image": "",
+        "alt": "",
+        "text": "A moment from our collection."
+      }
+    },
+    {
+      "id": "b-cf0a3151-c4a3-46e1-ba6e-d84afcab30ae",
+      "type": "image_text",
+      "name": "Image & text",
+      "props": {
+        "align": "left",
+        "spacing": "normal",
+        "columns": 3,
+        "eyebrow": "THOUGHTFULLY CHOSEN",
+        "heading": "Made for your everyday.",
+        "text": "Tell customers what matters to your brand, and why you love what you do.",
+        "image": "",
+        "alt": "",
+        "layout": "left",
+        "button": "Discover more",
+        "href": ""
+      }
+    },
+    {
+      "id": "b-fa00d0f1-73c1-4561-a545-e68b428a7129",
+      "type": "cards",
+      "name": "Image cards",
+      "props": {
+        "align": "left",
+        "spacing": "normal",
+        "columns": 3,
+        "heading": "Find your favourites",
+        "text": "Explore our collections.",
+        "items": [
+          {
+            "title": "The everyday edit",
+            "text": "Good things for your daily routine.",
+            "image": "",
+            "alt": "",
+            "href": "",
+            "label": "Explore"
+          },
+          {
+            "title": "Something new",
+            "text": "Discover your next favourite.",
+            "image": "",
+            "alt": "",
+            "href": "",
+            "label": "Explore"
+          },
+          {
+            "title": "Handpicked for you",
+            "text": "A collection with a little extra care.",
+            "image": "",
+            "alt": "",
+            "href": "",
+            "label": "Explore"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-2c3ac8fb-6a22-4359-9ad9-0b71ba581da4",
+      "type": "gallery",
+      "name": "Gallery",
+      "props": {
+        "align": "left",
+        "spacing": "normal",
+        "columns": 3,
+        "heading": "A closer look",
+        "items": [
+          {
+            "image": "",
+            "alt": "",
+            "title": ""
+          },
+          {
+            "image": "",
+            "alt": "",
+            "title": ""
+          },
+          {
+            "image": "",
+            "alt": "",
+            "title": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-a412b45e-603e-4515-a4c4-2807ec348968",
+      "type": "features",
+      "name": "Benefits",
+      "props": {
+        "align": "left",
+        "spacing": "normal",
+        "columns": 3,
+        "heading": "A better way to shop",
+        "items": [
+          {
+            "title": "Carefully selected",
+            "text": "Products we are proud to put our name behind."
+          },
+          {
+            "title": "Local, personal service",
+            "text": "A real team that cares about your experience."
+          },
+          {
+            "title": "Easy ordering",
+            "text": "Browse our collection and order through Fasta."
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-a1550187-1fde-4c9a-b0fa-1ce49daebeb7",
+      "type": "testimonials",
+      "name": "Testimonials",
+      "props": {
+        "align": "left",
+        "spacing": "normal",
+        "columns": 3,
+        "heading": "Words from our customers",
+        "items": [
+          {
+            "name": "Customer name",
+            "role": "Verified customer",
+            "quote": "Add a genuine customer testimonial here.",
+            "rating": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-a8639995-acbe-428e-8b8d-a470f7a64dbc",
+      "type": "faq",
+      "name": "Frequently asked questions",
+      "props": {
+        "align": "left",
+        "spacing": "normal",
+        "columns": 3,
+        "heading": "A few helpful answers",
+        "items": [
+          {
+            "question": "How do I place an order?",
+            "answer": "Browse our catalog and use Shop on Fasta to complete your order."
+          },
+          {
+            "question": "Where do you deliver?",
+            "answer": "Delivery availability is confirmed during checkout."
+          }
+        ]
+      }
+    },
+    {
+      "id": "b-4d761cb0-d9f3-4cec-8c83-172488103587",
+      "type": "cta",
+      "name": "Call to action",
+      "props": {
+        "align": "center",
+        "spacing": "normal",
+        "columns": 3,
+        "eyebrow": "READY WHEN YOU ARE",
+        "heading": "Your next favourite is waiting.",
+        "text": "Explore the collection and place your order.",
+        "button": "Shop on Fasta",
+        "href": "",
+        "background": "#073e2d",
+        "color": "#ffffff"
+      }
+    },
+    {
+      "id": "b-6b9a7551-12bf-401f-aa4e-0b1d079ed3c5",
+      "type": "contact",
+      "name": "Contact details",
+      "props": {
+        "align": "left",
+        "spacing": "normal",
+        "columns": 3,
+        "heading": "Let’s stay in touch.",
+        "text": "Questions about a product? Our team is here to help.",
+        "email": "",
+        "phone": "",
+        "address": ""
+      }
+    },
+    {
+      "id": "b-7189347a-cfdf-4934-bcc5-2dc9920bd8df",
+      "type": "spacer",
+      "name": "Spacer",
+      "props": {
+        "align": "left",
+        "spacing": "normal",
+        "columns": 3,
+        "height": 48
+      }
+    },
+    {
+      "id": "b-9baf454a-23ca-438b-bd74-449f3a779ed2",
+      "type": "divider",
+      "name": "Divider",
+      "props": {
+        "align": "left",
+        "spacing": "normal",
+        "columns": 3
+      }
+    }
+  ]
+}

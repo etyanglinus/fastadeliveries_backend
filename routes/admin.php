@@ -55,6 +55,13 @@ Route::name('admin.')->controller(ZoneController::class)->group(function () {
     Route::get('get-all-zone-coordinates/{id?}', 'getAllZoneCoordinates')->name('zone.zoneCoordinates');
 
     Route::middleware(['admin', 'current-module'])->controller(VendorController::class)->group(function () {
+        Route::post('brandsite/stores/{storeId}/editor', [\App\Http\Controllers\Admin\BrandSiteController::class, 'launch'])->whereNumber('storeId')->middleware('throttle:10,1')->name('brandsite.launch');
+        Route::post('brandsite/{id}/unpublish', [\App\Http\Controllers\Admin\BrandSiteController::class, 'unpublish'])->whereNumber('id')->middleware('throttle:30,1')->name('brandsite.unpublish');
+        Route::delete('brandsite/domains/{id}', [\App\Http\Controllers\Admin\BrandSiteController::class, 'removeDomain'])->whereNumber('id')->middleware('throttle:10,1')->name('brandsite.domain.remove');
+        Route::get('brandsite', [\App\Http\Controllers\Admin\BrandSiteController::class, 'index'])
+            ->name('brandsite.index');
+        Route::post('brandsite/{id}/moderation', [\App\Http\Controllers\Admin\BrandSiteController::class, 'update'])
+            ->whereNumber('id')->middleware('throttle:30,1')->name('brandsite.moderate');
         Route::controller(VendorController::class)->group(function () {
             Route::get('get-all-stores', 'get_all_stores')->name('get_all_stores');
         });

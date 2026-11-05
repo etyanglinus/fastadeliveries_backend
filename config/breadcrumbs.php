@@ -103,6 +103,7 @@ return [
     | Only the workspace crumb is dropped; the rest of the trail is unaffected.
     */
     'no_workspace' => [
+        'admin/brandsite*',
         'admin/settings*',
         'admin/message*',
     ],
@@ -116,6 +117,10 @@ return [
     | last crumb does not.
     */
     'overrides' => [
+
+        'admin/brandsite*' => [
+            ['label' => 'BrandSite', 'route' => 'admin.brandsite.index'],
+        ],
 
         'admin/settings*' => [
             ['label' => 'My profile', 'route' => 'admin.settings'],

@@ -41,15 +41,20 @@
     $active_section = 'dashboard';
     if ($is_parcel && ($is('admin/parcel/settings*') || $is('admin/parcel/cancellation-settings*'))) $active_section = 'parcel_settings';
     elseif ($is('admin/pos*') || $is('admin/order*') || $is('admin/refund/*') || $is('admin/parcel/orders/*') || $is('admin/parcel/details/*') || $is('admin/parcel/dispatch/*') || $is('admin/transactions/parcel/order/details/*') || $is('admin/transactions/order/details/*')) $active_section = 'sales';
-    elseif ($is('admin/category*') || $is('admin/attribute*') || $is('admin/unit*') || $is('admin/item*') || $is('admin/addon*') || $is('admin/brand*') || $is('admin/common-condition*') || $is('admin/parcel/category*') || $is('admin/report/stock-report*') || $is('admin/store-category*')) $active_section = 'catalog';
+    elseif ($is('admin/category*') || $is('admin/attribute*') || $is('admin/unit*') || $is('admin/item*') || $is('admin/addon*') || ($is('admin/brand') || $is('admin/brand/*')) || $is('admin/common-condition*') || $is('admin/parcel/category*') || $is('admin/report/stock-report*') || $is('admin/store-category*')) $active_section = 'catalog';
     elseif ($is('admin/store*')) $active_section = 'vendors';
     elseif ($is('admin/flash-sale*') || $is('admin/campaign*') || $is('admin/banner*') || $is('admin/promotional-banner*') || $is('admin/coupon*') || $is('admin/notification*') || $is('admin/advertisement*') || $is('admin/reels*') || $is('admin/bogo-offer*') || $is('admin/happy-hour*') || $is('admin/bundle*')) $active_section = 'marketing';
+    if (request()->is('admin/brandsite*')) $active_section = 'brandsite';
 @endphp
 
 <aside id="v2-shell" class="v2-shell" data-workspace="module" data-active-section="{{ $active_section }}">
     <div id="v2-rail" class="v2-rail v2-rail--module" role="navigation" aria-label="Sections">
         <div class="v2-rail-scope v2-rail-scope--module d-none">MODULE</div>
         <div class="v2-rail-btns">
+            @if((int) auth('admin')->user()?->role_id === 1)
+            <a href="{{ route('admin.brandsite.index') }}" class="v2-rail-btn {{ $active_section==='brandsite' ? 'is-active' : '' }}" data-section="brandsite" data-label="BrandSite" aria-label="BrandSite"><i data-lucide="panels-top-left"></i><span class="v2-pin-dot"></span></a>
+            @endif
+
             <button class="v2-rail-btn {{ $active_section==='dashboard' ? 'is-active' : '' }}" data-section="dashboard" data-label="{{ translate('Dashboard') }}" aria-label="{{ translate('Dashboard') }}">
                 <i data-lucide="gauge"></i>
                 <span class="v2-pin-dot"></span>
@@ -93,6 +98,16 @@
     </div>
 
     <aside id="v2-panel" class="v2-panel" aria-label="{{ translate('Section navigation') }}">
+        @if((int) auth('admin')->user()?->role_id === 1)
+        <div class="v2-panel-content" data-panel="brandsite" @if($active_section !== 'brandsite') hidden @endif>
+            <div class="v2-panel-header"><div class="v2-panel-title"><span class="name">BrandSite</span></div><div class="v2-panel-subtitle">Storefronts and seller support</div></div>
+            <div class="v2-panel-body"><div class="v2-group-items">
+                <a class="v2-nav-item {{ request()->is('admin/brandsite*') ? 'is-active' : '' }}" href="{{ route('admin.brandsite.index') }}"><span class="v2-dot v2-dot--blue"></span><span class="v2-label">All storefronts</span></a>
+                <a class="v2-nav-item" href="{{ route('admin.business-settings.subscriptionackage.index', ['module' => 'all']) }}"><span class="v2-dot v2-dot--violet"></span><span class="v2-label">Subscription packages</span></a>
+            </div></div>
+        </div>
+        @endif
+
         <div class="v2-panel-content" data-panel="dashboard" @if($active_section!=='dashboard') hidden @endif>
             <div class="v2-panel-header">
                 <div class="v2-panel-title">
@@ -347,7 +362,7 @@
                         @endif
 
                         @if(($is_ecommerce || $is_grocery) && Helpers::module_permission_check('category'))
-                            <a class="v2-nav-item {{ $is('admin/brand*') ? 'is-active' : '' }}" href="{{ route('admin.brand.add') }}" data-id="cat-brand">
+                            <a class="v2-nav-item {{ ($is('admin/brand') || $is('admin/brand/*')) ? 'is-active' : '' }}" href="{{ route('admin.brand.add') }}" data-id="cat-brand">
                                 <span class="v2-dot v2-dot--rose"></span>
                                 <span class="v2-label">{{ translate('messages.Brands') }}</span>
                                 <button type="button" class="v2-pin" data-pin="cat-brand" title="{{ translate('Pin') }}">@include('layouts.admin.partials._v2_pin_icon')</button>

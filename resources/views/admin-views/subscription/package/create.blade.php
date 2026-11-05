@@ -151,6 +151,15 @@ active
                         @if ($module == 'all')
                         <div class="check-item">
                             <label class="form-group form-check form--check">
+                                <input type="checkbox" class="form-check-input package-available-feature" name="brandsite_enabled" value="1" {{ old('brandsite_enabled') ? 'checked' : '' }}>
+                                <span class="form-check-label text-dark">BrandSite</span>
+                            </label>
+                        </div>
+                        @endif
+
+                        @if ($module == 'all')
+                        <div class="check-item">
+                            <label class="form-group form-check form--check">
                                 <input type="checkbox" class="form-check-input package-available-feature"  {{ old('pos_system') == 1 ? 'checked' : '' }} name="pos_system" value="1">
                                 <span class="form-check-label text-dark">{{ translate('messages.Pos system') }}</span>
                             </label>
