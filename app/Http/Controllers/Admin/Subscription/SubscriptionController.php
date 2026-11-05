@@ -113,6 +113,7 @@ class SubscriptionController extends Controller
             'self_delivery' => 'nullable|boolean',
             'chat' => 'nullable|boolean',
             'review' => 'nullable|boolean',
+            'brandsite_enabled' => 'nullable|boolean',
             'text' => 'nullable|max:1000',
         ], [
             'price.required' => translate('Must enter Price for the Package'),
@@ -133,6 +134,7 @@ class SubscriptionController extends Controller
         $package->self_delivery = $request->self_delivery ?? 0;
         $package->chat = $request->chat ?? 0;
         $package->review = $request->review ?? 0;
+        $package->brandsite_enabled = ($request->module ?? 'all') === 'all' && $request->boolean('brandsite_enabled');
         $package->colour = $request?->colour;
         $package->module_type = $request?->module ?? 'all';
         $package->save();
@@ -188,6 +190,7 @@ class SubscriptionController extends Controller
             'self_delivery' => 'nullable|boolean',
             'chat' => 'nullable|boolean',
             'review' => 'nullable|boolean',
+            'brandsite_enabled' => 'nullable|boolean',
             'text' => 'nullable|max:1000',
         ], [
             'price.required' => translate('Must enter Price for the Package'),
@@ -206,6 +209,7 @@ class SubscriptionController extends Controller
         $subscriptionackage->self_delivery = $request->self_delivery ?? 0;
         $subscriptionackage->chat = $request->chat ?? 0;
         $subscriptionackage->review = $request->review ?? 0;
+        $subscriptionackage->brandsite_enabled = $subscriptionackage->module_type === 'all' && $request->boolean('brandsite_enabled');
         $subscriptionackage->colour = $request?->colour;
         $subscriptionackage->save();
         $this->translationRepo->updateByModel(request: $request, model: $subscriptionackage, modelPath: 'App\Models\SubscriptionPackage', attribute: 'package_name');

@@ -702,23 +702,34 @@ if (! function_exists('collect_cash_success')) {
 
 if (! function_exists('order_place')) {
     function order_place($data) {
-        $order = Order::find($data->attribute_id);
-        $order->order_status='confirmed';
-        if($order->payment_method != 'partial_payment'){
-            $order->payment_method=$data->payment_method;
+        $order = DB::transaction(function () use ($data) {
+            $order = Order::query()->lockForUpdate()->find($data->attribute_id);
+            if (! $order || $order->payment_status === 'paid') {
+                return null;
+            }
+
+            $order->order_status = 'confirmed';
+            if ($order->payment_method !== 'partial_payment') {
+                $order->payment_method = $data->payment_method;
+            }
+            $order->payment_status = 'paid';
+            $order->confirmed = now();
+            $order->save();
+
+            $subscription = $order->store?->store_sub;
+            if ($order->store?->is_valid_subscription == 1 && $subscription && $subscription->max_order !== 'unlimited' && $subscription->max_order > 0) {
+                $subscription->decrement('max_order');
+            }
+
+            app(OrderPaymentService::class)->markUnpaidOrderPaymentPaid(orderId: $order->id, paymentMethod: $data->payment_method);
+
+            return $order;
+        }, 3);
+
+        if (! $order) {
+            return;
         }
-        $order->payment_status='paid';
-        $order->confirmed=now();
-        $order->save();
 
-
-
-        if( $order?->store?->is_valid_subscription == 1 && $order?->store?->store_sub?->max_order != "unlimited" && $order?->store?->store_sub?->max_order > 0){
-            $order?->store?->store_sub?->decrement('max_order' , 1);
-        }
-
-
-        app(OrderPaymentService::class)->markUnpaidOrderPaymentPaid(orderId: $order->id, paymentMethod: $data->payment_method);
         try {
             SendNotification::sendOrderNotifications($order);
             $address = json_decode($order->delivery_address, true);

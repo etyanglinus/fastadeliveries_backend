@@ -54,6 +54,13 @@
                         </a>
                     </li>
                     
+                    @if(auth('vendor')->check() && !auth('vendor_employee')->check())
+                        <li class="navbar-vertical-aside-has-menu {{ request()->routeIs('vendor.brandsite.*') ? 'active' : '' }}">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link" href="{{ route('vendor.brandsite.show') }}">
+                                <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">My BrandSite</span>
+                            </a>
+                        </li>
+                    @endif
                     @if ($sidebar->can('pos'))
                         <li
                             class="navbar-vertical-aside-has-menu {{ Request::is('vendor-panel/pos') ? 'active' : '' }}">

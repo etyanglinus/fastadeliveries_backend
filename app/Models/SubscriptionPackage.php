@@ -14,6 +14,7 @@ class SubscriptionPackage extends Model
     protected $guarded = ['id'];
     protected $casts = [
         'price'=>'float',
+        'brandsite_enabled'=>'boolean',
         'validity'=>'integer',
         'chat'=>'integer',
         'review'=>'integer',

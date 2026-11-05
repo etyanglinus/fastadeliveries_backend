@@ -35,6 +35,10 @@
                     </div>
                 </form>
                 <ul class="navbar-nav navbar-nav-lg nav-tabs">
+ @if((int) auth('admin')->user()?->role_id === 1)
+ <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/brandsite*') ? 'active' : '' }}"><a class="js-navbar-vertical-aside-menu-link nav-link" href="{{ route('admin.brandsite.index') }}"><i class="tio-browser nav-icon"></i><span class="text-truncate">BrandSite</span></a></li>
+ @endif
+
                 <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/dispatch') ? 'show active' : '' }}">
                     <a class="js-navbar-vertical-aside-menu-link nav-link" href="{{ route('admin.dispatch.dashboard') }}" title="{{ translate('Dashboard') }}">
                         <i class="tio-home-vs-1-outlined nav-icon"></i>

@@ -77,6 +77,11 @@
                             <span class="v2-dot v2-dot--blue"></span><span class="v2-label">{{ translate('Dashboard') }}</span>
                             <button type="button" class="v2-pin" data-pin="dh-home" title="{{ translate('Pin') }}">@include('layouts.admin.partials._v2_pin_icon')</button>
                         </a>
+                        @if(auth('vendor')->check() && !auth('vendor_employee')->check())
+                            <a class="v2-nav-item {{ request()->routeIs('vendor.brandsite.*') ? 'is-active' : '' }}" href="{{ route('vendor.brandsite.show') }}">
+                                <span class="v2-label">My BrandSite</span>
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>

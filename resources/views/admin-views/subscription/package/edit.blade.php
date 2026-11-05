@@ -167,6 +167,15 @@ active
                 </div>
                 <div class="card-body">
                     <div class="check--item-wrapper check--item-wrapper-2 mt-0">
+                        @if ($subscriptionackage->module_type == 'all')
+                        <div class="check-item">
+                            <label class="form-group form-check form--check">
+                                <input type="checkbox" class="form-check-input package-available-feature" name="brandsite_enabled" value="1" {{ old('brandsite_enabled', $subscriptionackage->brandsite_enabled ?? in_array((int) $subscriptionackage->id, config('brandsite.package_ids', []), true)) ? 'checked' : '' }}>
+                                <span class="form-check-label text-dark">BrandSite</span>
+                            </label>
+                        </div>
+                        @endif
+
                        @if ($subscriptionackage->module_type == 'all')
 
                        <div class="check-item">

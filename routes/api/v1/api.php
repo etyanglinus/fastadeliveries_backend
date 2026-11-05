@@ -172,6 +172,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('localization')->group(function () {
+    Route::get('brandsite-host/{hostname}', [\App\Http\Controllers\Api\V1\BrandSiteController::class, 'domain'])->where('hostname', '[a-z0-9.-]{1,233}')->middleware('throttle:300,1');
+    Route::get('brandsite/{slug}', [\App\Http\Controllers\Api\V1\BrandSiteController::class, 'show'])
+        ->where('slug', '[a-z0-9][a-z0-9-]{0,119}')
+        ->middleware('throttle:60,1');
+    Route::post('brandsite/editor/media', [\App\Http\Controllers\Vendor\BrandSiteController::class, 'media'])->middleware('throttle:20,1');
+    Route::post('brandsite/editor/session', [\App\Http\Controllers\Vendor\BrandSiteController::class, 'exchange'])
+        ->middleware('throttle:15,1');
+    Route::match(['get', 'post'], 'brandsite/editor/state', [\App\Http\Controllers\Vendor\BrandSiteController::class, 'editor'])
+        ->middleware('throttle:60,1');
     Route::controller(HomeController::class)->group(function () {
         Route::get('/terms-and-conditions', 'termsAndConditions');
         Route::get('/about-us', 'aboutUs');

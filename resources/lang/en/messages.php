@@ -8716,4 +8716,9 @@
   'Max discount must be greater than zero for percentage discount type' => 'Max discount must be greater than zero for percentage discount type',
   'asdfa' => 'Asdfa',
   'This add-on stays off until you upload a compatible version.' => 'This add-on stays off until you upload a compatible version.',
+  'Car Hire' => 'Car Hire',
+  'Ecommerce' => 'Ecommerce',
+  'The verification TXT record was not found. Check the record and retry.' => 'The verification TXT record was not found. Check the record and retry.',
+  'Maximum validity' => 'Maximum validity',
+  'BrandSite' => 'BrandSite',
 );

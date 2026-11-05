@@ -270,6 +270,9 @@ trait PlaceNewOrderTrait
             $order->delivery_instruction = $request['delivery_instruction'];
             $order->order_type = $request['order_type'];
             $order->store_id = $request['store_id'];
+            if ($request->attributes->has('verified_brandsite_site_id')) {
+                $order->brandsite_site_id = $request->attributes->get('verified_brandsite_site_id');
+            }
             $order->delivery_charge = round($delivery_charge, config('round_up_to_digit')) ?? 0;
             $order->original_delivery_charge = round($original_delivery_charge, config('round_up_to_digit'));
             // Snapshotted so panels identify a self-delivery order the same way for its whole

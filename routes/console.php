@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('brandsite:recheck-domains', function () {
+    app(\App\Services\BrandSiteDomainConnection::class)->refreshActive();
+})->purpose('Recheck ownership and ingress DNS for connected storefronts');
+
+\Illuminate\Support\Facades\Schedule::command('brandsite:recheck-domains')->hourly()->withoutOverlapping();

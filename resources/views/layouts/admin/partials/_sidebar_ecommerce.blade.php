@@ -43,6 +43,10 @@
 
 
                 <ul class="navbar-nav navbar-nav-lg nav-tabs">
+ @if((int) auth('admin')->user()?->role_id === 1)
+ <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/brandsite*') ? 'active' : '' }}"><a class="js-navbar-vertical-aside-menu-link nav-link" href="{{ route('admin.brandsite.index') }}"><i class="tio-browser nav-icon"></i><span class="text-truncate">BrandSite</span></a></li>
+ @endif
+
                     <li class="navbar-vertical-aside-has-menu {{ Request::is('admin') ? 'show active' : '' }}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"
                            href="{{ route('admin.dashboard') }}?module_id={{Config::get('module.current_module_id')}}"
@@ -511,7 +515,7 @@
                         </li>
                     @endif
                     @if(\App\CentralLogics\Helpers::module_permission_check('category'))
-                        <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/brand*') ? 'active' : '' }}">
+                        <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/brand', 'admin/brand/*') ? 'active' : '' }}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link" href="{{ route('admin.brand.add') }}"
                                title="{{ translate('messages.Brands') }}">
                                 <i class="tio-medal nav-icon"></i>

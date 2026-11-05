@@ -8,6 +8,9 @@ use App\Http\Requests\Customer\Order\PlaceOrderRequest;
 use App\Http\Requests\Customer\Order\SurgePriceRequest;
 use App\Http\Resources\Customer\Order\CheckoutSummaryResource;
 use App\Services\Order\OrderService;
+use App\Services\BrandSiteAccess;
+use App\Models\BrandSite;
+use App\Models\Store;
 use App\Traits\Order\CartValidationTrait;
 use App\Traits\Order\CheckoutSummaryTrait;
 use App\Traits\Order\PlaceNewOrderTrait;
@@ -31,6 +34,16 @@ class OrderPlacementController extends BaseApiController
 
     public function store(PlaceOrderRequest $request): JsonResponse
     {
+        if ($request->has('brandsite_slug')) {
+            $input = $request->validate(['brandsite_slug' => ['required', 'string', 'regex:/^[a-z0-9][a-z0-9-]{0,119}$/D']]);
+            $store = Store::query()->whereKey($request->input('store_id'))
+                ->where('slug', $input['brandsite_slug'])->firstOrFail();
+            abort_unless(app(BrandSiteAccess::class)->canPublish($store), 404);
+            $site = BrandSite::query()->where('store_id', $store->id)
+                ->whereNotNull('published_revision')->whereNull('suspended_at')->firstOrFail();
+            $request->attributes->set('verified_brandsite_site_id', $site->id);
+        }
+
         $deliveryType = $this->orderService->resolveDeliveryType($request->input('delivery_type'));
 
         if ($deliveryType) {

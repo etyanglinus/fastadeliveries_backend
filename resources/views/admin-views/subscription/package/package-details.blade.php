@@ -112,6 +112,12 @@ active
                 </div>
 
                 <div class="check--grid-wrapper mt-3 max-w-850px">
+                    @if ($subscriptionackage->module_type == 'all')
+                    <div><div class="d-flex align-items-center gap-2">
+                        <img src="{{ asset('/public/assets/admin/img/subscription-plan/'.(($subscriptionackage->brandsite_enabled ?? in_array((int) $subscriptionackage->id, config('brandsite.package_ids', []), true)) ? 'check.png' : 'check-1.png')) }}" alt="">
+                        <span class="form-check-label text-dark">BrandSite</span>
+                    </div></div>
+                    @endif
 
 
                     <div>
