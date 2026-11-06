@@ -49,10 +49,15 @@
     @endif
 
     <link rel="icon" type="image/x-icon" href="{{\App\CentralLogics\Helpers::iconFullUrl()}}">
+    <link rel="stylesheet" href="{{ asset('public/assets/landing/css/fasta-refinements.css') }}">
     @stack('css_or_js')
 </head>
 
 <body>
+    @php($storefrontUrl = config('app.storefront_url'))
+    @php($companyNavigation = app(\App\Services\FastaCompanyPages::class))
+    @php($companyPages = $companyNavigation->all())
+    @php($sellerWorkspace = $companyNavigation->action('seller_login'))
 
     <div id="page-progress-bar"></div>
 
@@ -60,28 +65,13 @@
          per row) for every "admin_landing_page" text this layout needs -- used here and again
          further down for the newsletter/footer titles. Was 4 separate single-row queries, each
          followed by its own translation lookup on ->value access. --}}
-    @php($landingFixedTexts = \App\Models\DataSetting::with('translations')->where('type', 'admin_landing_page')->whereIn('key', ['fixed_link', 'fixed_newsletter_title', 'fixed_newsletter_sub_title', 'fixed_footer_article_title', 'download_user_app_links'])->get()->keyBy('key'))
-    @php($fixed_link = optional($landingFixedTexts->get('fixed_link'))->value)
-    @php($fixed_link = isset($fixed_link) ? json_decode($fixed_link, true) : null)
+    @php($landingFixedTexts = \App\Models\DataSetting::with('translations')->where('type', 'admin_landing_page')->whereIn('key', ['fixed_newsletter_title', 'fixed_newsletter_sub_title', 'fixed_footer_article_title', 'download_user_app_links'])->get()->keyBy('key'))
 
     <div class="mobile-menu" id="mobileMenu">
         <button class="close-mob" id="closeMob">&times;</button>
-        <a href="{{route('home')}}" onclick="closeMobile()">{{ translate('messages.home') }}</a>
-        <a href="{{route('about-us')}}" onclick="closeMobile()">{{ translate('About us') }}</a>
-        <a href="{{route('privacy-policy')}}" onclick="closeMobile()">{{ translate('Privacy policy') }}</a>
-        <a href="{{route('terms-and-conditions')}}" onclick="closeMobile()">{{ translate('messages.Terms and condition') }}</a>
-        <a href="{{route('contact-us')}}" onclick="closeMobile()">{{ translate('Contact us') }}</a>
-        @if (isset($toggle_store_registration) && $toggle_store_registration)
-            <a href="{{ route('restaurant.create') }}" onclick="closeMobile()">{{ translate('messages.Vendor registration') }}</a>
-        @endif
-        @if (isset($toggle_dm_registration) && $toggle_dm_registration)
-            <a href="{{ route('deliveryman.create') }}" onclick="closeMobile()">{{ translate('Deliveryman registration') }}</a>
-        @endif
-        @if (isset($toggle_rider_registration) && $toggle_rider_registration)
-            <a href="{{ route('rider.create') }}" onclick="closeMobile()">{{ translate('Rider registration') }}</a>
-        @endif
-        @if (isset($fixed_link) && isset($fixed_link['web_app_url_status']) && $fixed_link['web_app_url_status'] && !empty($fixed_link['web_app_url']))
-            <a href="{{ $fixed_link['web_app_url'] }}" target="_blank" onclick="closeMobile()" class="mob-browse-web">{{ translate('Browse web') }}</a>
+        @include('company.navigation')
+        @if ($storefrontUrl)
+            <a href="{{ $storefrontUrl }}" onclick="closeMobile()" class="mob-browse-web">{{ translate('Order online') }}</a>
         @endif
     </div>
 
@@ -93,8 +83,7 @@
             <div class="nav-links gap-3 gap-lg-4">
                 <a href="{{route('home')}}" class="{{ Request::is('/') ? 'active-link' : '' }}">{{ translate('messages.home') }}</a>
                 <a href="{{route('about-us')}}" class="{{ Request::is('about-us') ? 'active-link' : '' }}">{{ translate('About us') }}</a>
-                <a href="{{route('privacy-policy')}}" class="{{ Request::is('privacy-policy') ? 'active-link' : '' }}">{{ translate('Privacy policy') }}</a>
-                <a href="{{route('terms-and-conditions')}}" class="{{ Request::is('terms-and-conditions') ? 'active-link' : '' }}">{{ translate('messages.Terms and condition') }}</a>
+                <a href="{{ route('careers') }}" class="{{ request()->routeIs('careers') ? 'active-link' : '' }}">Careers</a>
                 <a href="{{route('contact-us')}}" class="{{ Request::is('contact-us') ? 'active-link' : '' }}">{{ translate('Contact us') }}</a>
             </div>
             <div class="nav-right">
@@ -125,11 +114,11 @@
                 </div>
                 @endif
 
-                @if (isset($fixed_link) && isset($fixed_link['web_app_url_status']) && $fixed_link['web_app_url_status'] && !empty($fixed_link['web_app_url']))
-                <a href="{{ $fixed_link['web_app_url'] }}" target="_blank" class="btn-browse-web">{{ translate('Browse web') }}</a>
+                @if ($storefrontUrl)
+                <a href="{{ $storefrontUrl }}" class="btn-browse-web">{{ translate('Order online') }}</a>
                 @endif
 
-                @if (isset($toggle_dm_registration) || isset($toggle_store_registration) || isset($toggle_rider_registration))
+                @if ((isset($toggle_dm_registration) && $toggle_dm_registration) || (isset($toggle_store_registration) && $toggle_store_registration) || (isset($toggle_rider_registration) && $toggle_rider_registration))
                 <div class="join-wrap">
                     <button class="btn-join">{{ translate('Join us') }} <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2.5 3.75L5 6.25L7.5 3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
                     <div class="join-dd">
@@ -168,16 +157,6 @@
         @php($fixed_footer_article_title = optional($landingFixedTexts->get('fixed_footer_article_title'))->value)
 
         <div class="container">
-            <div class="newsletter-area">
-                <h2>{{ $fixed_newsletter_title ?? translate('Sign up to our newsletter') }}</h2>
-                <p>{{ $fixed_newsletter_sub_title ?? translate('Receive latest news, updates and many other news every week') }}</p>
-                <form class="nl-form" method="post" action="{{route('newsletter.subscribe')}}">
-                    @csrf
-                    <input type="email" name="email" placeholder="{{ translate('Enter your email address') }}" required />
-                    <button type="submit">{{ translate('Subscribe') }}</button>
-                </form>
-            </div>
-
             <div class="footer-grid">
                 <div class="f-brand">
                     <a href="{{route('home')}}" class="nav-logo">
@@ -217,33 +196,34 @@
                 </div>
 
                 @php($landing_data_footer =\App\CentralLogics\Helpers::landing_policy_statuses())
-                <div>
-                    <h5>{{translate("messages.Support")}}</h5>
-                    <div class="f-links">
-                        <a href="{{route('privacy-policy')}}">{{ translate('Privacy policy') }}</a>
-                        <a href="{{route('terms-and-conditions')}}">{{ translate('messages.Terms and condition') }}</a>
-                        @if (isset($landing_data_footer['refund_policy_status']) && $landing_data_footer['refund_policy_status'] == 1)
-                        <a href="{{route('refund')}}">{{ translate('Refund policy') }}</a>
-                        @endif
-                        @if (isset($landing_data_footer['shipping_policy_status']) && $landing_data_footer['shipping_policy_status'] == 1)
-                        <a href="{{route('shipping-policy')}}">{{ translate('Shipping policy') }}</a>
-                        @endif
-                        @if (isset($landing_data_footer['cancellation_policy_status']) && $landing_data_footer['cancellation_policy_status'] == 1)
-                        <a href="{{route('cancelation')}}">{{ translate('Cancellation policy') }}</a>
-                        @endif
-                    </div>
-                </div>
+                @include('company.footer-links')
 
                 <div>
-                    <h5>{{translate('Contact us')}}</h5>
+                    <h5>{{ translate('Contact us') }}</h5>
                     <div class="f-contact">
-                        <a href="#">&#x1F4CD; {{ \App\CentralLogics\Helpers::get_settings('address') }}</a>
+                        <span>&#x1F4CD; {{ \App\CentralLogics\Helpers::get_settings('address') }}</span>
                         <a href="mailto:{{ \App\CentralLogics\Helpers::get_settings('email_address') }}">&#x2709;&#xFE0F; {{ \App\CentralLogics\Helpers::get_settings('email_address') }}</a>
                         <a href="tel:{{ \App\CentralLogics\Helpers::get_settings('phone') }}">&#x1F4DE; {{ \App\CentralLogics\Helpers::get_settings('phone') }}</a>
+                    </div>
+                    <div class="footer-newsletter">
+                        <h5>{{ $fixed_newsletter_title ?? translate('Stay Connected with Fasta') }}</h5>
+                        <p>{{ $fixed_newsletter_sub_title ?? translate('Get the latest offers, exciting updates and exclusive deals in your inbox.') }}</p>
+                        <form class="nl-form" method="post" action="{{ route('newsletter.subscribe') }}">
+                            @csrf
+                            <input type="email" name="email" placeholder="{{ translate('Enter your email address') }}" required />
+                            <button type="submit">{{ translate('Subscribe') }}</button>
+                        </form>
                     </div>
                 </div>
             </div>
 
+            <nav class="fasta-footer-policies" aria-label="Policies">
+                <a href="{{ route('privacy-policy') }}">Privacy policy</a>
+                <a href="{{ route('terms-and-conditions') }}">Terms and conditions</a>
+                @if(!empty($landing_data_footer['refund_policy_status']))<a href="{{ route('refund') }}">Refund policy</a>@endif
+                @if(!empty($landing_data_footer['shipping_policy_status']))<a href="{{ route('shipping-policy') }}">Delivery policy</a>@endif
+                @if(!empty($landing_data_footer['cancellation_policy_status']))<a href="{{ route('cancelation') }}">Cancellation policy</a>@endif
+            </nav>
             <div class="footer-bottom-bar">
                 &copy; {{ \App\CentralLogics\Helpers::get_settings('footer_text') }}
                 by {{ \App\CentralLogics\Helpers::get_settings('business_name') }}

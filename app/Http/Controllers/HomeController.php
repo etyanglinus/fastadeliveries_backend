@@ -36,6 +36,25 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+    public function careers()
+    {
+        return $this->companyPage('careers');
+    }
+
+    public function campus()
+    {
+        return $this->companyPage('campus');
+    }
+
+    public function companyPage(string $page)
+    {
+        $pageService = app(\App\Services\FastaCompanyPages::class);
+        $companyPage = $pageService->all()[$page] ?? null;
+        abort_unless($companyPage && $companyPage['published'] && !in_array($page, ['home', 'about'], true), 404);
+
+        return view('company.page', compact('companyPage', 'pageService'));
+    }
+
     public function index()
     {
         $datas =  DataSetting::with('translations', 'storage')->where('type', 'admin_landing_page')->get();
@@ -179,7 +198,7 @@ class HomeController extends Controller
 
         if (isset($config) && $config) {
 
-            return view('home', compact('landing_data', 'new_user'));
+            return view('home', compact('landing_data', 'new_user') + ['storefrontUrl' => config('app.storefront_url')]);
         } elseif ($landing_integration_type == 'file_upload' && File::exists('resources/views/layouts/landing/custom/index.blade.php')) {
             return view('layouts.landing.custom.index');
         } elseif ($landing_integration_type == 'url') {
@@ -225,22 +244,10 @@ class HomeController extends Controller
 
     public function about_us(Request $request)
     {
-        $data = self::get_settings('about_us');
-        $data_title = self::get_settings('about_title');
-
-        $config = Helpers::get_business_settings('landing_page');
-        $landing_integration_type = Helpers::get_business_data('landing_integration_type');
-        $redirect_url = Helpers::get_business_data('landing_page_custom_url');
-
-        if (isset($config) && $config) {
-            return view('about-us', compact('data', 'data_title'));
-        } elseif ($landing_integration_type == 'file_upload' && File::exists('resources/views/layouts/landing/custom/index.blade.php')) {
-            return view('layouts.landing.custom.index');
-        } elseif ($landing_integration_type == 'url') {
-            return redirect($redirect_url);
-        } else {
-            abort(404);
-        }
+        return view('about-us', [
+            'data' => self::get_settings('about_us'),
+            'data_title' => self::get_settings('about_title'),
+        ]);
     }
 
     public function contact_us()

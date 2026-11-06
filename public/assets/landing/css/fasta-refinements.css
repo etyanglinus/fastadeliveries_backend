@@ -1,0 +1,79 @@
+/* Fasta's company pages retain the existing landing components and theme settings. */
+:root{--fasta-ink:#16382b;--fasta-surface:#f5f8f3;--fasta-action:#126442;--fasta-rule:#dbe8de}
+.fasta-landing .hero{background:var(--fasta-surface);padding:clamp(2.25rem,6vw,5.5rem) 0;text-align:start}
+.fasta-hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(1.5rem,5vw,5rem);align-items:center}
+.fasta-landing .hero .fasta-kicker,.fasta-kicker{margin:0 0 .85rem;color:var(--fasta-action);font-weight:800;font-size:.78rem;letter-spacing:.11em;text-transform:uppercase}
+.fasta-landing .hero h1{max-width:15ch;margin:0 0 1rem;color:var(--fasta-ink);font-size:clamp(2.4rem,5.3vw,5rem);line-height:1.04;letter-spacing:-.045em}
+.fasta-landing .hero p{margin-inline:0;font-size:clamp(1rem,1.5vw,1.16rem);line-height:1.65}
+.fasta-landing .hero-btns{justify-content:flex-start;gap:.65rem}
+.fasta-landing .hero-btn,.fasta-order-link{min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:.6rem}
+.fasta-order-link,.fasta-landing .hero-btn--order{background:var(--fasta-action);color:#fff;border:2px solid var(--fasta-action);border-radius:999px;padding:.65rem 1.2rem;font-weight:800;text-decoration:none}
+.fasta-order-link:hover,.fasta-landing .hero-btn--order:hover{background:#0e5035;color:#fff;border-color:#0e5035}
+.fasta-landing .hero-btn--vendor,.fasta-landing .hero-btn--delivery{background:#fff;color:var(--fasta-ink);border:1px solid var(--fasta-rule);padding-inline:1rem}
+.fasta-landing .hero-illustration{border-radius:28px;min-height:250px;display:grid;place-items:center;padding:clamp(1rem,3vw,2.5rem);opacity:1;background:radial-gradient(ellipse at 70% 20%,#eff8d9,#dbeee2 78%);color:var(--fasta-action)}
+.fasta-landing .hero-illustration svg{opacity:.74}
+.fasta-order-band{padding-block:clamp(1.5rem,4vw,3rem)}
+.fasta-order-card{border:1px solid var(--fasta-rule);background:var(--fasta-surface);border-radius:24px;padding:clamp(1.3rem,4vw,2.5rem);display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.fasta-order-card h2{color:var(--fasta-ink);font-size:clamp(1.5rem,3vw,2.35rem);letter-spacing:-.035em;margin:0 0 .35rem}.fasta-order-card p{margin:0}.fasta-order-card .fasta-order-link{flex-shrink:0}
+.fasta-landing .sec-header h2,.fasta-landing .earn-top h2{letter-spacing:-.035em;font-size:clamp(1.8rem,3.4vw,3rem)}
+.fasta-landing .feat-card,.fasta-landing .earn-card,.fasta-landing .svc-img .img-card{border-radius:22px}
+.footer{border-start-start-radius:clamp(20px,4vw,44px);border-start-end-radius:clamp(20px,4vw,44px)}
+.fasta-company-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:1rem;margin-bottom:1rem}
+.fasta-company-grid .content-card{margin:0;border:1px solid var(--fasta-rule);box-shadow:none}
+.fasta-company-grid h2{color:var(--fasta-ink);margin:.35rem 0 .6rem}
+.fasta-landing a:focus-visible,.fasta-order-link:focus-visible{outline:3px solid #9b641c;outline-offset:4px}
+@media(max-width:767px){.fasta-hero-grid{grid-template-columns:1fr}.fasta-landing .hero-illustration{min-height:150px}.fasta-order-card{align-items:flex-start;flex-direction:column}}
+@media(prefers-reduced-motion:reduce){.fasta-landing .hero-btn,.fasta-landing .feat-card,.fasta-landing .earn-card{transition:none}}
+
+.main-nav{background:rgba(255,255,255,.94);border-bottom:1px solid #e6eee8;box-shadow:0 8px 26px rgba(22,56,43,.07)}
+.main-nav .container{height:76px;gap:clamp(1rem,2.5vw,2.5rem)}
+.main-nav .nav-brand{flex-shrink:0;gap:11px;text-decoration:none}
+.main-nav .nav-brand img{width:44px;height:44px;object-fit:contain}
+.nav-brand-copy{display:flex;flex-direction:column;gap:2px;line-height:1.15}
+.nav-brand-copy strong{color:var(--fasta-ink);font-size:1rem;font-weight:900;letter-spacing:-.04em}
+.nav-brand-copy small{color:#718078;font-size:.57rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase}
+.main-nav .nav-links{flex:1;justify-content:center;gap:4px}
+.main-nav .nav-links a{border-radius:999px;color:#526159;font-size:.8rem;font-weight:700;padding:10px 13px;text-decoration:none;transition:background .2s ease,color .2s ease}
+.main-nav .nav-links a:hover,.main-nav .nav-links a.active-link{background:#eff7f1;color:#126442}
+.main-nav .nav-right{gap:9px}
+.main-nav .btn-browse-web,.main-nav .btn-join{min-height:42px;padding:9px 17px;font-size:.8rem;font-weight:800}
+.main-nav .btn-browse-web{box-shadow:0 5px 13px rgba(18,100,66,.16)}
+.main-nav .btn-browse-web:hover{background:#0e5035;border-color:#0e5035}
+.main-nav .btn-join{border-color:#dbe8de;color:var(--fasta-ink);gap:8px}
+.main-nav .btn-join:hover{background:#f5f8f3;border-color:#b9d1c1;color:#126442;box-shadow:none}
+.main-nav .lang-sw .lang-current{min-height:40px;padding-inline:11px;background:#fff;border-color:#e6eee8}
+.main-nav .join-dd{top:calc(100% + 12px);border-color:#e6eee8;border-radius:14px;box-shadow:0 18px 45px rgba(22,56,43,.14)}
+.main-nav .join-wrap:hover .join-dd,.main-nav .join-wrap:focus-within .join-dd{opacity:1;visibility:visible;transform:translateY(0)}
+.main-nav .mob-btn{width:42px;height:42px;align-items:center;justify-content:center;border:1px solid #e2ebe5;border-radius:12px;background:#fff;cursor:pointer}
+.main-nav .mob-btn:hover{border-color:#b9d1c1;background:#f5f8f3}
+.main-nav .mob-btn span{width:18px;background:var(--fasta-ink)}
+.main-nav a:focus-visible,.main-nav button:focus-visible,.mobile-menu a:focus-visible{outline:3px solid #9b641c;outline-offset:3px}
+@media(max-width:991px){
+  .main-nav .container{gap:1rem}
+  .main-nav .nav-links a{font-size:.72rem;padding-inline:9px}
+}
+@media(max-width:850px){
+  .main-nav .nav-links,.main-nav .lang-sw{display:none}
+  .main-nav .mob-btn{display:flex}
+}
+@media(max-width:575px){
+  .main-nav .container{height:68px;padding-inline:16px;gap:8px}
+  .main-nav .nav-brand{gap:8px}
+  .main-nav .nav-brand img{width:38px;height:38px}
+  .nav-brand-copy strong{font-size:.88rem}
+  .nav-brand-copy small{font-size:.5rem}
+  .main-nav .nav-right{gap:7px}
+  .main-nav .btn-browse-web,.main-nav .btn-join{min-height:38px;padding:7px 11px;font-size:.7rem}
+  .main-nav .mob-btn{width:38px;height:38px}
+}
+@media(max-width:390px){
+  .nav-brand-copy small{display:none}
+  .main-nav .container{gap:6px}
+  .main-nav .nav-right{gap:5px}
+  .main-nav .btn-browse-web,.main-nav .btn-join{padding-inline:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .main-nav *{scroll-behavior:auto!important;transition:none!important}
+}
+
+.fasta-menu{position:relative}.fasta-menu summary{cursor:pointer;font-weight:700;white-space:nowrap}.fasta-menu-links{display:grid;gap:.25rem;padding:.65rem}.main-nav .fasta-menu-links{position:absolute;top:calc(100% + .5rem);inset-inline-start:0;min-width:190px;max-width:260px;background:#fff;border:1px solid var(--fasta-rule);border-radius:14px;box-shadow:0 12px 30px #16382b22;z-index:10}.fasta-menu-links a{padding:.4rem .55rem;border-radius:8px}.main-nav .fasta-menu-links a:hover{background:var(--fasta-surface)}.mobile-menu .fasta-menu{width:100%}.mobile-menu .fasta-menu-links{padding-inline-start:.8rem}.fasta-footer-policies{display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;margin-top:1.4rem}.fasta-footer-policies a{color:inherit;text-decoration:underline}.fasta-company-copy{white-space:pre-line;overflow-wrap:anywhere}

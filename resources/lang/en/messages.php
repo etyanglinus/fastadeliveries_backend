@@ -8721,4 +8721,13 @@
   'The verification TXT record was not found. Check the record and retry.' => 'The verification TXT record was not found. Check the record and retry.',
   'Maximum validity' => 'Maximum validity',
   'BrandSite' => 'BrandSite',
+  'Order online' => 'Order online',
+  'Explore Fasta' => 'Explore Fasta',
+  'Grow with us' => 'Grow with us',
+  'Careers' => 'Careers',
+  'Help & policies' => 'Help & policies',
+  'FAQs & support' => 'FAQs & support',
+  'Seller sign in' => 'Seller sign in',
+  'Admin sign in' => 'Admin sign in',
+  'Local delivery, made easy' => 'Local delivery, made easy',
 );

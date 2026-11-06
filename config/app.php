@@ -3,6 +3,12 @@
 use App\Providers\InterfaceServiceProvider;
 
 return [
+    'storefront_url' => (static function (): ?string {
+        $url = env('FASTA_STOREFRONT_URL', env('APP_ENV') === 'local' ? 'http://localhost:3017/' : null);
+
+        return is_string($url) && filter_var($url, FILTER_VALIDATE_URL)
+            && in_array(parse_url($url, PHP_URL_SCHEME), ['http', 'https'], true) ? $url : null;
+    })(),
 
     /*
     |--------------------------------------------------------------------------

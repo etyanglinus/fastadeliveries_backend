@@ -46,6 +46,9 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('lang/{locale}', [HomeController::class, 'lang'])->name('lang');
     Route::get('terms-and-conditions', 'terms_and_conditions')->name('terms-and-conditions');
     Route::get('about-us', 'about_us')->name('about-us');
+    Route::get('careers', 'careers')->name('careers');
+    Route::get('campus', 'campus')->name('campus');
+    Route::get('explore/{page}', 'companyPage')->where('page', '[a-z0-9-]+')->name('company-page');
     Route::get('contact-us', 'contact_us')->name('contact-us');
     Route::post('send-message', 'send_message')->name('send-message');
     Route::get('privacy-policy', 'privacy_policy')->name('privacy-policy');

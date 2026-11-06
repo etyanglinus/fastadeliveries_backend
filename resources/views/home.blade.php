@@ -1,18 +1,21 @@
 @extends('layouts.landing.app')
 @php($business_name = \App\CentralLogics\Helpers::get_business_settings('business_name'))
-@section('title', translate('Landing page') . ' | ' . $business_name != 'null' ? $business_name : 'Sixam Mart')
+@section('title', ($business_name ?: 'Fasta Deliveries') . ' | Shop local, order online')
 @section('content')
+<div class="fasta-landing">
 
     <section class="hero">
-        <div class="container">
+        <div class="container fasta-hero-grid">
+        <div>
+            <p class="fasta-kicker">Local shops. Everyday delivery.</p>
             <h1>{!! \App\CentralLogics\Helpers::highlight($landing_data['fixed_header_title']) !!}</h1>
-            <div class="hero-logo">
-                <img class="onerror-image" data-onerror-image="{{ asset('public/assets/admin/img/160x160/img2.jpg') }}" src="{{ \App\CentralLogics\Helpers::logoFullUrl()}}" alt="">
-            </div>
             <p>{!! \App\CentralLogics\Helpers::highlight($landing_data['fixed_header_sub_title']) !!}</p>
             @php($toggle_store_registration_hero = \App\CentralLogics\Helpers::get_business_settings('toggle_store_registration'))
             @php($toggle_dm_registration_hero = \App\CentralLogics\Helpers::get_business_settings('toggle_dm_registration'))
             <div class="hero-btns">
+                @if ($storefrontUrl)
+                    <a href="{{ $storefrontUrl }}" class="hero-btn hero-btn--order">Order online <span aria-hidden="true">↗</span></a>
+                @endif
                 @if ($toggle_store_registration_hero)
                 <a href="{{ route('restaurant.create') }}" class="hero-btn hero-btn--vendor">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -36,10 +39,35 @@
                 @endif
             </div>
         </div>
-        <div class="hero-illustration">
+        <div class="hero-illustration" aria-hidden="true">
             @include('layouts.landing._hero-illustration')
         </div>
+        </div>
     </section>
+
+    @if ($storefrontUrl)
+        <section class="fasta-order-band" aria-labelledby="fasta-order-title">
+            <div class="container">
+                <div class="fasta-order-card">
+                    <div>
+                        <h2 id="fasta-order-title">What do you need today?</h2>
+                        <p>Set your delivery location and browse nearby shops on the Fasta storefront.</p>
+                    </div>
+                    <a href="{{ $storefrontUrl }}" class="fasta-order-link">Open storefront <span aria-hidden="true">↗</span></a>
+                </div>
+            </div>
+        </section>
+    @endif
+
+    @php($pageService = app(\App\Services\FastaCompanyPages::class))
+    @php($companyHome = $pageService->all()['home'])
+    @if($companyHome['published'])
+        <section class="page-content" aria-labelledby="fasta-company-home-title"><div class="container">
+            <h2 id="fasta-company-home-title">{{ $companyHome['title'] }}</h2>
+            @if(filled($companyHome['intro']))<p>{{ $companyHome['intro'] }}</p>@endif
+            @include('company.sections', ['entry' => $companyHome, 'pageService' => $pageService])
+        </div></section>
+    @endif
 
     @php($modules = \App\CentralLogics\Helpers::modules_list()->where('status', 1))
     @if($modules && count($modules) > 0)
@@ -413,6 +441,7 @@
     </div>
     @endif
 
+</div>
 @endsection
 @push('script_2')
 <script>

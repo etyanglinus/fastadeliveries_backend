@@ -397,12 +397,8 @@
                 <div class="v2-group">
                     <button type="button" class="v2-group-header" data-group-toggle="pg-land"><span>{{ translate('Landing pages') }}</span><i data-lucide="chevron-down" class="v2-chev"></i></button>
                     <div class="v2-group-items">
-                        <a class="v2-nav-item {{ $is('admin/business-settings/pages/admin-landing-page-settings*') ? 'is-active' : '' }}" href="{{ route('admin.business-settings.admin-landing-page-settings', 'setup') }}" data-id="pg-adm">
-                            <span class="v2-dot v2-dot--blue"></span><span class="v2-label">{{ translate('Admin landing page') }}</span>
-                            <button type="button" class="v2-pin" data-pin="pg-adm" title="{{ translate('Pin') }}">@include('layouts.admin.partials._v2_pin_icon')</button>
-                        </a>
                         <a class="v2-nav-item {{ $is('admin/business-settings/pages/react-landing-page-settings*') ? 'is-active' : '' }}" href="{{ route('admin.business-settings.react-landing-page-settings', 'header') }}" data-id="pg-rea">
-                            <span class="v2-dot v2-dot--blue"></span><span class="v2-label">{{ translate('React landing page') }}</span>
+                            <span class="v2-dot v2-dot--blue"></span><span class="v2-label">{{ translate('Storefront landing page') }}</span>
                             <button type="button" class="v2-pin" data-pin="pg-rea" title="{{ translate('Pin') }}">@include('layouts.admin.partials._v2_pin_icon')</button>
                         </a>
                         @if (addon_published_status('RideShare') == 1)
@@ -417,6 +413,9 @@
                 <div class="v2-group">
                     <button type="button" class="v2-group-header" data-group-toggle="pg-leg"><span>{{ translate('Business pages') }}</span><i data-lucide="chevron-down" class="v2-chev"></i></button>
                     <div class="v2-group-items">
+                        <a class="v2-nav-item {{ $is('admin/business-settings/pages/company*') ? 'is-active' : '' }}" href="{{ route('admin.business-settings.company-pages.edit') }}" data-id="bp-company">
+                            <span class="v2-dot v2-dot--violet"></span><span class="v2-label">Company website</span>
+                        </a>
                         <a class="v2-nav-item {{ $is('admin/business-settings/pages/business-page/terms-and-conditions*') ? 'is-active' : '' }}" href="{{ route('admin.business-settings.terms-and-conditions') }}" data-id="bp-tc">
                             <span class="v2-dot v2-dot--violet"></span><span class="v2-label">{{ translate('Terms & conditions') }}</span>
                             <button type="button" class="v2-pin" data-pin="bp-tc" title="{{ translate('Pin') }}">@include('layouts.admin.partials._v2_pin_icon')</button>
