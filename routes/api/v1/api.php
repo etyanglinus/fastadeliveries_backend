@@ -1005,3 +1005,5 @@ Route::prefix('erp')->middleware('erp.api')->group(function () {
     Route::get('/refunds', [ErpRefundController::class, 'index']);
     Route::get('/refunds/{id}', [ErpRefundController::class, 'show']);
 });
+
+Route::post('analytics/events', [\App\Http\Controllers\SellerAnalyticsController::class, 'collect'])->middleware('throttle:60,1');

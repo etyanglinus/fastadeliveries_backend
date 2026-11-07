@@ -35,6 +35,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('vendor.')->group(function () {
     Route::middleware(['vendor', 'maintenance'])->group(function () {
+        Route::get('analytics', [\App\Http\Controllers\SellerAnalyticsController::class, 'report'])->name('analytics');
         Route::get('brandsite', [\App\Http\Controllers\Vendor\BrandSiteController::class, 'show'])
             ->name('brandsite.show');
         Route::post('brandsite', [\App\Http\Controllers\Vendor\BrandSiteController::class, 'save'])

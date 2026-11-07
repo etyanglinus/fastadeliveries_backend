@@ -6,6 +6,7 @@
 </style>
 @endpush
 @section('content')
+<div class="container-fluid pt-3"><a class="btn btn-outline-primary" href="{{ route('vendor.analytics') }}">View store analytics</a></div>
 @php($publishedUrl = rtrim((string) config('brandsite.web_origin'), '/').'/brandsite/'.$store['slug'])
 <div class="bs-home">
     <div class="bs-page-top"><div><div class="bs-eyebrow">YOUR DIGITAL STOREFRONT</div><h1>My BrandSite</h1></div><span class="bs-status"><i></i>{{ $published_revision ? 'Your site is live' : 'Ready for your ideas' }}</span></div>
